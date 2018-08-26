@@ -19,6 +19,8 @@ static BOOL active_eightway[36] = {
     YES, NO,  YES, NO , // NW
 };
 
+const static BOOL active_eightway_size = 36;
+
 static BOOL active_fourway[20] = {
     NO,  NO,  NO,  NO , // center
     YES, NO,  NO,  NO , // N
@@ -26,6 +28,8 @@ static BOOL active_fourway[20] = {
     NO,  YES, NO,  NO , // S
     NO,  NO,  YES, NO , // W
 };
+
+const static BOOL active_fourway_size = 36;
 
 @implementation NJInputHat {
     CFIndex _max;
@@ -105,8 +109,12 @@ static BOOL active_fourway[20] = {
         size++;
     }
     BOOL *activechildren = (size == 8) ? active_eightway : active_fourway;
+    int activechildrenSize = (size == 8) ? active_eightway_size : active_fourway_size;
     for (unsigned i = 0; i < 4; i++) {
-        BOOL active = activechildren[parsed * 4 + i];
+        BOOL active = NO;
+        if (parsed * 4 + i < activechildrenSize) {
+            active = activechildren[parsed * 4 + i];
+        }
         [self.children[i] setActive:active];
         [self.children[i] setMagnitude:active];
     }
